@@ -13,11 +13,13 @@
                 </div>
                 <div class="flex">
                     <button
+                        @click="() => emit('createAccount')"
                         class="px-3 py-2 text-xs font-bold text-white rounded-full sm:text-base sm:px-6 focus:outline-none"
                     >
                         Crie uma conta
                     </button>
                     <button
+                        @click="() => emit('login')"
                         class="px-3 py-2 text-xs font-bold bg-white rounded-full sm:text-base sm:px-6 text-brand-main focus:outline-none"
                     >
                         Entrar
@@ -50,8 +52,8 @@
 
 <script>
 export default {
-    setup() {
-        return {}
+    setup(props, { emit }) {
+        return { emit }
     }
 }
 </script>

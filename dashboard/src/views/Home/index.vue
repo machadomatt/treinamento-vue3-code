@@ -13,6 +13,7 @@ import HomeHeader from './HomeHeader.vue'
 import HomeContact from './HomeContact.vue'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useModal } from '../../hooks'
 
 export default {
     components: {
@@ -21,6 +22,7 @@ export default {
     },
     setup() {
         const router = useRouter()
+        const modal = useModal()
 
         onMounted(() => {
             const token = window.localStorage.getItem('token')
@@ -29,8 +31,16 @@ export default {
             }
         })
 
-        const handleLogin = () => {}
-        const handleCreateAccount = () => {}
+        const handleLogin = () => {
+            modal.open({
+                component: 'ModalLogin'
+            })
+        }
+        const handleCreateAccount = () => {
+            modal.open({
+                component: 'ModalCreateAccount'
+            })
+        }
 
         return { handleLogin, handleCreateAccount }
     }

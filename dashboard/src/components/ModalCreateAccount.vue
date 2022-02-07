@@ -1,0 +1,11 @@
+<template>
+    <h1>Modal Create Account</h1>
+</template>
+
+<script>
+export default {
+    setup() {
+        return {}
+    }
+}
+</script>
