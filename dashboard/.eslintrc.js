@@ -16,6 +16,14 @@ module.exports = {
             {
                 ignores: ['index']
             }
+        ],
+        'space-before-function-paren': [
+            'error',
+            {
+                anonymous: 'always',
+                named: 'never',
+                asyncArrow: 'always'
+            }
         ]
     },
     overrides: [
