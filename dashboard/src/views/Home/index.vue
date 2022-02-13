@@ -13,7 +13,7 @@ import HomeHeader from './HomeHeader.vue'
 import HomeContact from './HomeContact.vue'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useModal } from '../../hooks'
+import { useModal } from '@/hooks'
 
 export default {
     components: {
