@@ -48,7 +48,12 @@
                 :class="{ 'opacity-50': state.isLoading }"
                 class="px-8 py-3 mt-10 text-2xl font-bold text-white transition-all duration-150 rounded-full bg-brand-main focus:outline-none"
             >
-                Entrar
+                <icon
+                    v-if="state.isLoading"
+                    name="loading"
+                    class="animate-spin"
+                />
+                <span v-else>Entrar</span>
             </button>
         </form>
     </div>
@@ -56,13 +61,22 @@
 
 <script>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { useModal } from '@/hooks'
 import { useField } from 'vee-validate'
+import { useToast } from 'vue-toastification'
 import { validateEmptyLength3, validateEmptyAndEmail } from '@/utils/validators'
+import services from '@/services'
+import Icon from './IconFactory.vue'
 
 export default {
+    components: {
+        Icon
+    },
     setup() {
+        const router = useRouter()
         const modal = useModal()
+        const toast = useToast()
 
         const { value: emailValue, errorMessage: emailErrorMessage } = useField(
             'email',
@@ -85,7 +99,41 @@ export default {
             }
         })
 
-        const handleSubmit = () => {}
+        const handleSubmit = async () => {
+            try {
+                toast.clear()
+                state.isLoading = true
+                const { data, errors } = await services.auth.login({
+                    email: state.email.value,
+                    password: state.password.value
+                })
+
+                console.log(data, errors)
+
+                if (!errors) {
+                    window.localStorage.setItem('token', data.token)
+                    router.push({ name: 'feedbacks' })
+                    state.isLoading = false
+                    modal.close()
+                    return
+                }
+
+                if (errors.status === 400) {
+                    toast.error('Ocorreu um erro ao fazer o login')
+                }
+                if (errors.status === 401) {
+                    toast.error('E-mail ou senha invalidos')
+                }
+                if (errors.status === 404) {
+                    toast.error('E-mail não encontrado')
+                }
+                state.isLoading = false
+            } catch (error) {
+                state.isLoading = false
+                state.hasErrors = !!error
+                toast.error('Ocorreu um erro ao fazer o login')
+            }
+        }
 
         return { state, close: modal.close, handleSubmit }
     }
