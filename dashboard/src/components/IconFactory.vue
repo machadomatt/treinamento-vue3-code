@@ -4,8 +4,9 @@
 
 <script>
 import Loading from './IconLoading.vue'
+import Copy from './IconCopy.vue'
 export default {
-    components: { Loading },
+    components: { Loading, Copy },
     props: {
         name: {
             type: String,
